@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Videos</title>
 </head>
+
 <body>
   <ul class="videos">
     <li data-time="5:43">
@@ -181,7 +183,30 @@
       Video 58
     </li>
   </ul>
-<script>
-</script>
+
+
+  <script>
+    // Map and Reduce
+    const timeNodes = Array.from(document.querySelectorAll('[data-time]')); // could use spreading on the nodelist 'timeNodes' into a new array.
+    // now that its an array we can use map on it
+    const seconds = timeNodes.map(node => node.dataset.time)
+      .map(timecode => {
+        const [mins, secs] = timecode.split(':').map(parseFloat); // by passing parseFloat here it calls this function against every item in the array
+        return (mins * 60) + secs;
+      })
+      .reduce((total, vidSeconds) => total + vidSeconds);
+
+    let secondsLeft = seconds;
+    let hours = Math.floor(secondsLeft / 3600);
+    secondsLeft = secondsLeft % 3600;  // using mod gives us how many are left after being evenly divided.
+    console.log(secondsLeft);
+    const mins = Math.floor(secondsLeft / 60);
+    secondsLeft = secondsLeft % 60;
+    console.log(hours, mins, secondsLeft);
+
+
+
+  </script>
 </body>
+
 </html>
