@@ -49,11 +49,11 @@
   <script>
     const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
     function strip(bandName) {
-      return bandName.replace(/^(a | the | an)/i, '').trim();
+      return bandName.replace(/^(a |the |an)/i, '').trim(); // using a regular expression to remove articles. "/i" at the end makes it insensitve to case: a and A.
     }
-    const sorted = bands.sort((a, b) => strip(a) > strip(b) ? 1 : -1);// by only using the strip() in the if statemente we don't alter the dataset, using ternerary opperator
+    const sorted = bands.sort((a, b) => strip(a) > strip(b) ? 1 : -1); // by only using the strip() in the if statement we don't alter the dataset, using ternerary opperator
 
-    document.querySelector('#bands').innerHTML = sorted.map(band => `<li>${band}</li>`).join(''); // must use a .join('') at the end to join the array without the automatically inserted commas that come from using .innerHTML 'to string method'
+    document.querySelector('#bands').innerHTML = sorted.map(band => `<li>${band}</li>`).join(''); // must use a .join('') at the end to join the array without the automatically inserted commas that come from using .innerHTML 'to string method' on an array.
   </script>
 
 </body>
