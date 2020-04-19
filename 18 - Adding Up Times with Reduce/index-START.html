@@ -194,10 +194,10 @@
         const [mins, secs] = timecode.split(':').map(parseFloat); // by passing parseFloat here it calls this function against every item in the array
         return (mins * 60) + secs;
       })
-      .reduce((total, vidSeconds) => total + vidSeconds);
+      .reduce((total, vidSeconds) => total + vidSeconds); // reduce the array of seconds into one big total number.
 
     let secondsLeft = seconds;
-    let hours = Math.floor(secondsLeft / 3600);
+    let hours = Math.floor(secondsLeft / 3600); // Math.floor takes whole number since the remainder will be the minutes and seconds so we don't need those for this variable.
     secondsLeft = secondsLeft % 3600;  // using mod gives us how many are left after being evenly divided.
     console.log(secondsLeft);
     const mins = Math.floor(secondsLeft / 60);
