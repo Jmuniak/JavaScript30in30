@@ -10,7 +10,9 @@ body {
   margin: 0;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
@@ -21,14 +23,19 @@ body {
   padding: 40px;
   text-align: justify;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);
-  transform: scale(0.98);
+  transform: scale(0.96);
   transition: transform 0.5s;
+}
+
+/* added this to make the site-wrap pop a little more when the user scrolls down enough to fix the nav */
+body.fixed-nav .site-wrap {
+  transform: scale(1);
 }
 
 header {
   text-align: center;
   height: 50vh;
-  background: url(http://wes.io/iEgP/wow-so-deep.jpg) bottom center no-repeat;
+  background: url(https://images.wallpaperscraft.com/image/city_fog_forest_167992_1400x1050.jpg) bottom center no-repeat;
   background-size: cover;
   display: flex;
   align-items: center;
@@ -38,7 +45,7 @@ header {
 h1 {
   color: white;
   font-size: 7vw;
-  text-shadow: 3px 4px 0 rgba(0,0,0,0.2);
+  text-shadow: 3px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 nav {
@@ -50,9 +57,15 @@ nav {
   z-index: 1;
 }
 
+/* apply position: fixed and a light shadow to demonstrate the depth created by having text flow under the fixed nav*/
+body.fixed-nav nav {
+  position: fixed;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.1)
+}
+
 nav ul {
   margin: 0;
-  padding:0;
+  padding: 0;
   list-style: none;
   display: flex;
 }
@@ -76,6 +89,10 @@ li.logo {
 
 li.logo a {
   color: black;
+}
+/* by using max-width: 500px instead of width: auth we can make use of the transition effect */
+.fixed-nav li.logo {
+  max-width: 500px;
 }
 
 nav a {
