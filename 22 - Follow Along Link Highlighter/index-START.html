@@ -26,7 +26,31 @@
     </div>
 
   <script>
-    // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+
+    const triggers = document.querySelectorAll('a'); // select all the links we want to have trigger the highlight styling.
+    const highlight = document.createElement('span'); // the span is tacked onto the dom to give a highlight effect.
+    highlight.classList.add('highlight');
+    document.body.appendChild(highlight);
+
+    function highlightLink() {
+      // console.log('HIGHLIGHT!', this);
+      const linkCoords = this.getBoundingClientRect();
+      console.log(linkCoords);
+      const coords = {
+        width: linkCoords.width,
+        height: linkCoords.height,
+        top: linkCoords.top + window.scrollY,
+        left: linkCoords.left + window.scrollX
+      }; // by using these instead of linkCoords in the styling below we can account for the user having scrolled on the page and still the the highlighting work as it should.
+      // without the coords + the window.scroll the highlighting is off its mark if the user has scrolled down or to the side.
+
+      highlight.style.width = `${coords.width}px`;
+      highlight.style.height = `${coords.height}px`;
+      highlight.style.transform = `translate(${coords.left}px, ${coords.top}px)`;
+
+    }
+    triggers.forEach(a => a.addEventListener('mouseenter', highlightLink));
+
   </script>
 </body>
 </html>
