@@ -41,7 +41,20 @@
 </style>
 
 <button></button>
+
 <script>
+  const divs = document.querySelectorAll('div');
+
+  function logText() {
+    console.log(this);
+    console.log(this.classList.value);
+    // e.stopPropagation(); // stop bubbling
+  };
+
+divs.forEach(div => div.addEventListener('click', logText, {
+  capture: false, // true makes the event fire on the way down rather than the bubble up. by default this is false.
+  once: true // listens for one click then unbinds itself after it fires once and basically removes the event listener.
+}))
 
 </script>
 </body>
