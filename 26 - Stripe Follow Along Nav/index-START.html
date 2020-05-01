@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Follow Along Nav</title>
+  <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
   <h2>Cool</h2>
   <nav class="top">
@@ -12,15 +15,18 @@
     </div>
 
     <ul class="cool">
+      <!-- Parent <li> 1 -->
       <li>
         <a href="#">About Me</a>
         <div class="dropdown dropdown1">
           <div class="bio">
             <img src="https://logo.clearbit.com/wesbos.com">
-            <p>Wes Bos sure does love web development. He teaches things like JavaScript, CSS and BBQ. Wait. BBQ isn't part of web development. It should be though!</p>
+            <p>Wes Bos sure does love web development. He teaches things like JavaScript, CSS and BBQ. Wait. BBQ isn't
+              part of web development. It should be though!</p>
           </div>
         </div>
       </li>
+      <!-- Parent <li> 2 -->
       <li>
         <a href="#">Courses</a>
         <ul class="dropdown courses">
@@ -62,6 +68,7 @@
           </li>
         </ul>
       </li>
+      <!-- Parent <li> 3 -->
       <li>
         <a href="#">Other Links</a>
         <ul class="dropdown dropdown3">
@@ -74,153 +81,56 @@
     </ul>
   </nav>
 
-<style>
-  html {
-    box-sizing: border-box;
-    font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
-  }
-  
-  *, *:before, *:after {
-    box-sizing: inherit;
-  }
-  
-  body {
-    margin: 0;
-    min-height: 100vh;
-    background:
-      linear-gradient(45deg, hsla(340, 100%, 55%, 1) 0%, hsla(340, 100%, 55%, 0) 70%),
-      linear-gradient(135deg, hsla(225, 95%, 50%, 1) 10%, hsla(225, 95%, 50%, 0) 80%),
-      linear-gradient(225deg, hsla(140, 90%, 50%, 1) 10%, hsla(140, 90%, 50%, 0) 80%),
-      linear-gradient(315deg, hsla(35, 95%, 55%, 1) 100%, hsla(35, 95%, 55%, 0) 70%);
-  }
 
-  h2 {
-    margin-top: 0;
-    padding-top: .8em;
-  }
 
-  nav {
-    position: relative;
-    perspective: 600px;
-  }
+  <script>
+    const triggers = document.querySelectorAll('.cool > li'); // all the direct descendants of the .cool li
+    const background = document.querySelector('.dropdownBackground');
+    const nav = document.querySelector('.top');
 
-  .cool > li > a {
-    color: yellow;
-    text-decoration: none;
-    font-size: 20px;
-    background: rgba(0,0,0,0.2);
-    padding: 10px 20px;
-    display: inline-block;
-    margin: 20px;
-    border-radius: 5px;
-  }
+    function handleEnter() {
+      // console.log('enter');
+      this.classList.add('trigger-enter');
+      // When you enter a regular function the value of this changes.
+      // By using an arrow function from ES6 the value of this is inherited from the parent function. 
+      // By using .contains in the timeout we avoid the problem of someone hovering off before the trigger-enter-active is applied.
+      setTimeout(() => this.classList.contains('trigger-enter') && this.classList.add('trigger-enter-active'), 150);
+      // console.log(this); // // Because of the arrow function this gives us the classList instead of 'Wisndow'.
 
-  nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-  }
+      // open the background div
+      background.classList.add('open');
 
-  .cool > li {
-    position: relative;
-    display: flex;
-    justify-content: center;
-  }
+      // by declaring this const here this function dynamically grabs the drop down where the mouse enters rather than all of the dropdowns on the page.
+      const dropdown = this.querySelector('.dropdown');
+      const dropdownCoords = dropdown.getBoundingClientRect(); // this gives us the size relative to the dropdown we've entered.
+      // console.log(dropdownCoords);
+      const navCoords = nav.getBoundingClientRect();
+      // console.log(navCoords);
 
-  .dropdown {
-    opacity: 0;
-    position: absolute;
-    overflow: hidden;
-    padding: 20px;
-    top: -20px;
-    border-radius: 2px;
-    transition: all 0.5s;
-    transform: translateY(100px);
-    will-change: opacity;
-    display: none;
-  }
+      const coords = {
+        height: dropdownCoords.height,
+        width: dropdownCoords.width,
+        top: dropdownCoords.top - navCoords.top, // we do this to account for any changes to the nav location. like .offset in jQuery
+        left: dropdownCoords.left - navCoords.left
+      };
 
-  .trigger-enter .dropdown {
-    display: block;
-  }
+      background.style.setProperty('width', `${coords.width}px`);
+      background.style.setProperty('height', `${coords.height}px`);
+      background.style.setProperty('transform', `translate(${coords.left}px, ${coords.top}px)`);
+    };
 
-  .trigger-enter-active .dropdown {
-    opacity: 1;
-  }
-  
-  .dropdownBackground {
-    width: 100px;
-    height: 100px;
-    position: absolute;
-    background: #fff;
-    border-radius: 4px;
-    box-shadow: 0 50px 100px rgba(50,50,93,.1), 0 15px 35px rgba(50,50,93,.15), 0 5px 15px rgba(0,0,0,.1);
-    transition: all 0.3s, opacity 0.1s, transform 0.2s;
-    transform-origin: 50% 0;
-    display: flex;
-    justify-content: center;
-    opacity:0;
-  }
 
-  .dropdownBackground.open {
-    opacity: 1;
-  }
+    function handleLeave() {
+      // console.log('leave');
+      this.classList.remove('trigger-enter', 'trigger-enter-active');
+      background.classList.remove('open');
+    };
 
-  .arrow {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    display: block;
-    background: white;
-    transform: translateY(-50%) rotate(45deg);
-  }
+    triggers.forEach(trigger => trigger.addEventListener('mouseenter', handleEnter));
+    triggers.forEach(trigger => trigger.addEventListener('mouseleave', handleLeave));
 
-  .bio {
-    min-width: 500px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 1.7;
-  }
-
-  .bio img {
-    float: left;
-    margin-right: 20px;
-  }
-
-  .courses {
-    min-width: 300px;
-  }
-
-  .courses li {
-    padding: 10px 0;
-    display: block;
-    border-bottom: 1px solid rgba(0,0,0,0.2);
-  }
-
-  .dropdown a {
-    text-decoration: none;
-    color: #ffc600;
-  }
-
-  a.button {
-    background: black;
-    display: block;
-    padding: 10px;
-    color: white;
-    margin-bottom: 10px;
-  }
-
-  /* Matches Twitter, TWITTER, twitter, tWitter, TWiTTeR... */
-  .button[href*=twitter] { background: #019FE9; }
-  .button[href*=facebook] { background: #3B5998; }
-  .button[href*=courses] { background: #ffc600; }
-</style>
-
-<script>
-</script>
+  </script>
 
 </body>
+
 </html>
